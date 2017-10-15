@@ -1,36 +1,46 @@
-import java.io.BufferedReader;
+
+/**
+ * @author pongelupe
+ */
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Scanner;
 
 public class App {
 
 	public static void main(String[] args) throws IOException {
-		BufferedReader d = new BufferedReader(new InputStreamReader(System.in));
-		String ler = null;
-		ler = d.readLine();
-		int numInstancias = Integer.parseInt(ler.trim());
-		int totalBac = 1;
+		Scanner sc = new Scanner(System.in);
 
-		for (int tempo = 1; tempo <= numInstancias; tempo++) {
-			ler = d.readLine();
-			if (ler != null) {
-				// System.out.println(fibonnaci(tempo + 1));
-				System.out.println(totalBac);
-				int fibonnaci = fibonnaci(tempo + 1);
-				int qntBacs = Integer.parseInt(ler.trim());
-				totalBac += qntBacs;
-				totalBac *= fibonnaci;
-				// System.out.println(totalBac);
-				// totalBac += fibonnaci(totalBac - qntBacs);
-				// totalBac += qntBacs;
-				// totalBac += qntBacs;
+		while (sc.hasNextLine()) {
+			String line = sc.nextLine();
+			String[] split = line.split(" ");
+			BigInteger x = new BigInteger(split[0]);
+			BigInteger y = new BigInteger(split[1]);
+
+			BigInteger coeficienteTerreno = mdc(x, y);
+			BigInteger estacas = BigInteger.ZERO;
+
+			if (coeficienteTerreno.equals(BigInteger.ONE)) {
+				estacas = calculaEstacas(x, y);
+			} else {
+				x = x.divide(coeficienteTerreno);
+				y = y.divide(coeficienteTerreno);
+				estacas = calculaEstacas(x, y);
 			}
+			System.out.println(estacas);
 		}
-		d.close();
+
+		sc.close();
 	}
 
-	public static int fibonnaci(int k) {
-		return (k == 1 || k == 0) ? 1 : fibonnaci(k - 1) + fibonnaci(k - 2);
+	private static BigInteger calculaEstacas(BigInteger x, BigInteger y) {
+		BigInteger perimetro = x.add(y).multiply(BigInteger.valueOf(2));
+		return perimetro;
 	}
+
+	private static BigInteger mdc(BigInteger x, BigInteger y) {
+		return x.gcd(y);
+
+	}
+
 }
